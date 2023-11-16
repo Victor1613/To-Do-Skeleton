@@ -17,7 +17,7 @@
 
 body {
   font-family: 'Arial', sans-serif;
-  background-color: white;
+  background-color: rgb(175, 111, 235);
   color: white;
   display: flex;
   flex-direction: column;
@@ -26,7 +26,7 @@ body {
 
 header,
 footer {
-  background-color: gray;
+  background-color: #e88f8fb1;
   text-align: center;
   padding: 10px 0;
 }
@@ -43,4 +43,7 @@ footer {
   padding-left: 15px;
   margin-right: auto;
   margin-left: auto;
+}
+.task-item {
+  background-color: rgb(3, 45, 82);
 }
