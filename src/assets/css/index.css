@@ -4,46 +4,184 @@
 @import './_media.css';
 
 
-
-* {
-  font-family: 'DM Sans', sans-serif;
-}
-
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
 body {
-  font-family: 'Arial', sans-serif;
-  background-color: rgb(175, 111, 235);
-  color: white;
   display: flex;
   flex-direction: column;
-  min-height: 100vh;
-}
-
-header,
-footer {
-  background-color: #e88f8fb1;
-  text-align: center;
-  padding: 10px 0;
-}
-
-.header__title,
-.footer__text {
+  justify-content: space-between;
   margin: 0;
-  padding: 10px 0;
+  background: #40008A;
+  padding: 0;
+  height: 100vh;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.main-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+  justify-content: center;
+  box-sizing: border-box;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  width: 100%;
+}
+
+.task-lists_wrapper {
+  display: flex;
+  align-items: flex-start;
+  gap: 40px;
+
 }
 
 .container {
-  width: 100%;
-  padding-right: 15px;
-  padding-left: 15px;
   margin-right: auto;
   margin-left: auto;
+  padding-right: 20px;
+  padding-left: 20px;
+  max-width: 1300px;
 }
-.task-item {
-  background-color: rgb(3, 45, 82);
+
+.header {
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+  border-radius: 10px;
+  background: #2C0161;
+  padding: 10px;
+  width: 100%;
+  color: #DDC1FF;
+}
+
+.header__logo {
+  margin-top: 0px;
+  margin-right: auto;
+  margin-bottom: 0px;
+  font-weight: 300;
+  letter-spacing: 2px;
+}
+
+.header__button {
+  margin-bottom: 10px;
+  border: none;
+  background: none;
+  color: #DDC1FF;
+  font-weight: 300;
+  font-size: 50px;
+  line-height: 40px;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+.header__profile {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 100%;
+  background: #E0D7DE;
+  width: 50px;
+  height: 50px;
+  color: #2C0161;
+  font-size: 30px;
+}
+
+.tasks-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  border-radius: 16px;
+  background: #DDC1FF;
+  padding: 10px;
+
+  width: 100%;
+  min-width: 300px;
+  max-width: 400px;
+}
+
+.tasks-list__heading {
+  display: flex;
+  gap: 10px;
+  color: #2C0161;
+}
+
+.tasks-list__icon {
+  width: 30px;
+  object-fit: scale-down;
+}
+
+.tasks-list__button {
+  margin-left: auto;
+  border: none;
+  background: none;
+  color: #2C0161;
+  font-weight: 300;
+  font-size: 40px;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+.task {
+  position: relative;
+  border-radius: 16px;
+  background: #F7EFFF;
+  padding: 10px;
+  color: #403D47;
+}
+
+.task__priority {
+  display: inline-flex;
+  gap: 6px;
+}
+
+.priority-icon {
+  border-radius: 10px;
+  background: #DED8DF;
+  width: 20px;
+  height: 10px;
+}
+
+.medium-priority .priority-icon:nth-child(-n+2) {
+  background: #FCED42;
+}
+
+.high-priority .priority-icon {
+  background: #DA1266;
+}
+
+.low-priority .priority-icon:nth-child(1) {
+  background: #1BE8A2;
+}
+
+.tast-completed .priority-icon {
+  background: #4403A4;
+}
+
+.task__date {
+  position: absolute;
+  right: 20px;
+  bottom: 15px;
+  color: #2C0161;
+}
+
+.footer {
+  background: #2C0161;
+  padding: 5px;
+
+
+}
+
+.footer__text {
+  color: #DDC1FF;
+  font-size: 20px;
+  text-align: center;
+}
+
+@media (max-width: 1100px) {
+
+
+  .task-lists_wrapper {
+      flex-direction: column;
+      align-items: center;
+  }
+
+  .tasks-list {
+      min-width: 200px;
+  }
 }
