@@ -1,93 +1,52 @@
-
 <!DOCTYPE html>
-<html lang="ru">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Kanban Board</title>
-    <link rel="stylesheet" href="./src/assets/css/index.css" />
-  </head>
-  <body>
-    <header class="header container">
-      <h1 class="header__logo">Kanban Board</h1>
+<html lang="en">
 
-      <img src="./src/assets/img/kanban/plus.svg" alt="плюс">
-      <div class="header__profile">в.к</div>
-    </header>
-    <main class="main-wrapper container">
-      <div class="task-lists_wrapper">
-        <section class="tasks-list">
-          <div class="tasks-list__heading">
-            <img class="tasks-list__icon" src="./src/assets/img/kanban/img1.svg" alt="" />
-            <h3 class="tasks-list__title">Задачи</h3>
-            <img src="./src/assets/img/kanban/plus.svg" alt="плюс">
-          </div>
-          <article draggable="true" class="task">
-            <h2 class="task__title">Задача 2</h2>
-            <p class="task__description">Описание задачи 2</p>
-            <div class="task__priority medium-priority">
-              <div class="priority-icon"></div>
-              <div class="priority-icon"></div>
-              <div class="priority-icon"></div>
-            </div>
-            <span class="task__date">1.12.2023</span>
-          </article>
-        </section>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="./src/assets/css/index.css">
+  <title>To-Do-List-Kanban</title>
+</head>
 
-        <section class="tasks-list">
-          <div class="tasks-list__heading">
-            <img class="tasks-list__icon" src="./src/assets/img/kanban/kanban__column--in-progress.svg" alt="" />
-            <h3 class="tasks-list__title">В процессе</h3>
-            <img src="./src/assets/img/kanban/plus.svg" alt="плюс">
-          </div>
-
-          <article draggable="true" class="task">
-            <h2 class="task__title">Задача 9</h2>
-            <p class="task__description">Описание задачи 9</p>
-            <div class="task__priority low-priority">
-              <div class="priority-icon"></div>
-              <div class="priority-icon"></div>
-              <div class="priority-icon"></div>
-            </div>
-            <span class="task__date">20.12.2023</span>
-          </article>
-
-          <article draggable="true" class="task">
-            <h2 class="task__title">Задача 5</h2>
-            <p class="task__description">Описание задачи 5</p>
-            <div class="task__priority high-priority">
-              <div class="priority-icon"></div>
-              <div class="priority-icon"></div>
-              <div class="priority-icon"></div>
-            </div>
-            <span class="task__date">18.11.2023</span>
-          </article>
-        </section>
-
-        <section class="tasks-list">
-          <div class="tasks-list__heading">
-            <img class="tasks-list__icon" src="./src/assets/img/kanban/kanban__column--done.svg" alt="" />
-            <h3 class="tasks-list__title">Выполнено</h3>
-            <img src="./src/assets/img/kanban/plus.svg" alt="плюс">
-          </div>
-
-          <article draggable="true" class="task">
-            <h2 class="task__title">Задача 10</h2>
-            <p class="task__description">Описание задачи 10</p>
-            <div class="task__priority tast-completed">
-              <div class="priority-icon"></div>
-              <div class="priority-icon"></div>
-              <div class="priority-icon"></div>
-            </div>
-            <span class="task__date">1.10.2034</span>
-          </article>
-        </section>
+<body>
+  <header class="header">
+    <div class="container header__container">
+      <h1 class="header__title">Kanban Board</h1>
+      <div class="header__option">
+        <img src="./src/assets/img/header/plus.svg" alt="header__icon--add" class="header__icon header__icon--add">
+        <div class="header__user-icon">К.П</div>
       </div>
-    </main>
+    </div>
+    <div>
 
-    <footer class="footer">
-      <p class="footer__text">To-Do-List-Kanban</p>
-    </footer>
-  </body>
-  <script src="./src/assets/js/index.js"></script>
-</html> 
+    </div>
+  </header>
+
+  <main class="container">
+    <div class="kanban" id="app">
+
+    </div>
+
+    <div class="modal"> 
+      <div class="modal__container">
+        <a href="#" class="close-modal">✖</a> 
+        <form>
+          <input required type="text" id="title-task" name="title" placeholder="Введите заголовок задачи"/>
+          <textarea required id="description-task" name="description" placeholder="Введите описание задачи"></textarea>
+          <input type="date" name="date" placeholder="Выберите дату"/>
+          <button type="submit">Отправить</button>
+          <button type="button" class="cancel-button">Отмена</button> 
+        </form>
+      </div>
+    </div>
+    
+  </main>
+
+  <footer class="footer">
+    <p class="footer__text">To-Do-List-Kanban</p>
+  </footer>
+</body>
+<script src="./src/assets/js/list.js"></script>
+<script src="./src/assets/js/index.js"></script>
+
+</html>
