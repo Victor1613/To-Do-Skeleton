@@ -1,1 +1,0 @@
-import"./auth.js";import"./todo.js";import"./list.js";document.addEventListener("DOMContentLoaded",(()=>{localStorage.getItem("authToken")?window.location.href="./todo/":window.location.href="./auth/"}));
