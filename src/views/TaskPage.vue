@@ -1,0 +1,197 @@
+<template>
+
+  <header/>
+
+  <div style="text-align: center">
+    <button @click.prevent="deletLocalStorage" class="but">
+      <RouterLink to="/reg">Выход</RouterLink>
+    </button>
+  </div>
+
+
+  <kanban-column
+      v-for="column in tasks"
+      :key="column.id"
+      :column="column.statuses"
+      :tasks="column.tasks"
+      @add-task="openModal(column.id)"
+      @task-dropped="handleTaskDropped"
+  />
+
+  <footer/>
+
+  <the-modal
+      v-if="isModalOpen"
+      @add-task="addTask"
+      @close-modal="closeModal"
+  />
+
+
+</template>
+
+<script>
+
+import KanbanColumn from '@/components/todo/TheColumn.vue';
+import Header from "@/components/Header.vue";
+import Footer from "@/components/Footer.vue";
+import AuthPage from "@/views/AuthPage.vue";
+import RegPage from "@/views/RegPage.vue";
+import {mapActions, mapGetters} from "vuex";
+import router from "@/router/index.js";
+import TheModal from "@/components/todo/TheModal.vue";
+
+
+export default {
+  computed:{
+    ...mapGetters([
+      'tasks'
+    ])
+  },
+
+  components: {
+    KanbanColumn,
+    Header,
+    Footer,
+    TheModal,
+    AuthPage,
+    RegPage,
+
+
+
+  },
+  data() {
+    return {
+      isModalOpen: false,
+      currentColumnId: null,
+      statuses: [],
+    };
+  },
+
+
+  methods: {
+    ...mapActions([
+      'getTasks'
+    ]),
+
+    deletLocalStorage(){
+      localStorage.removeItem('token');
+    },
+
+    openModal(columnId) {
+      this.currentColumnId = columnId;
+      this.isModalOpen = true;
+    },
+    closeModal() {
+      this.isModalOpen = false;
+    },
+    addTask(newTask) {
+      const newId = this.localTasks.length + 1;
+      const newTaskWithId = {
+        ...newTask,
+        id: newId,
+        columnId: this.currentColumnId,
+      };
+      this.localTasks.push(newTaskWithId);
+
+      const columnToUpdate = this.localColumns.find(
+          (column) => column.id === this.currentColumnId,
+      );
+      columnToUpdate.tasks.push(newId);
+
+      this.closeModal();
+    },
+    handleTaskDropped(taskId, targetColumnId) {
+      // Находим текущий columnId задачи
+      const currentTask = this.localTasks.find(task => task.id === taskId);
+      if (!currentTask || currentTask.columnId === targetColumnId) {
+        // Если задача уже в этой колонке или не найдена, ничего не делаем
+        return;
+      }
+
+      // Обновляем localTasks
+      const updatedTasks = this.localTasks.map(task => {
+        if (task.id === taskId) {
+          return { ...task, columnId: targetColumnId };
+        }
+        return task;
+      });
+      this.localTasks = updatedTasks;
+
+      // Обновляем localColumns
+      this.localColumns = this.localColumns.map(column => {
+        if (column.id === targetColumnId) {
+          // Добавляем задачу, если её там ещё нет
+          if (!column.tasks.includes(taskId)) {
+            return { ...column, tasks: [...column.tasks, taskId] };
+          }
+        } else {
+          // Удаляем задачу из текущей колонки
+          return { ...column, tasks: column.tasks.filter(id => id !== taskId) };
+        }
+        return column;
+      });
+    },
+  },
+
+  mounted() { //происходит после загрузки страници
+    if(!localStorage.getItem('token')){
+      router.push('/auth')
+    }
+    else{
+      this.getTasks()
+    }
+  }
+};
+</script>
+
+<style>
+* {
+  font-family: 'Montserrat', sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background-color: #2B1887;
+  color: white;
+  min-height: 100vh;
+  min-width: 380px;
+}
+
+html {
+  min-width: 380px;
+}
+
+.header__container,
+footer {
+  background-color: #1C0E5E;
+  text-align: center;
+  padding: 10px 0;
+}
+
+.header__title,
+.footer__text {
+  margin: 0;
+  padding: 10px 0;
+}
+
+.container {
+  width: 100%;
+  padding: 0 15px;
+  margin: 0 auto;
+}
+
+.but{
+  height: 5vh;
+  background-color: #2ce49d;
+  border-radius: 4px;
+
+}
+</style>
