@@ -5,8 +5,7 @@ import Kanban from "./components/Kanban.vue";
 import Login from "./components/Login.vue";
 import { ref } from "vue";
 
-// const isLogged = ref(false);
-const isLogged = true;
+const isLogged = ref(false);
 
 function handleLogin(){
   isLogged.value = true

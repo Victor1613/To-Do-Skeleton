@@ -3,6 +3,7 @@
     <div class="header__container container ">
       <h1 class="header__title">Kanban Board</h1>
       <div class="header__option">
+        <settings/>
         <img
           src="../assets/img/header/plus.svg"
           alt="header__icon--add"
@@ -49,3 +50,6 @@ header {
   font-weight: 600;
 }
 </style>
+<script setup>
+import Settings from "@/components/Settings.vue";
+</script>
