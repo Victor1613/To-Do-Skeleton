@@ -4,7 +4,7 @@
       <h1 class="header__title">Kanban Board</h1>
       <div class="header__option">
         <img
-          src="src/assets/img/header/plus.svg"
+          src="../assets/img/header/plus.svg"
           alt="header__icon--add"
           class="header__icon header__icon--add"
         />

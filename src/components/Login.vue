@@ -35,7 +35,7 @@ function login() {
         <button @click="login" class="auth-form__submit">Войти</button>
       </div>
     </div>
-    <img class="wave" src="src/assets/img/auth/wave.svg" alt="">
+    <img class="wave" src="./assets/img/auth/wave.svg" alt="">
 </template>
 
 <style>

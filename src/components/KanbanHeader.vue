@@ -18,7 +18,7 @@ function handleAddTask(event) {
       <img :src="column.icon" :alt="`Колонка ${column.title}`" class="kanban__icon kanban__icon--column" />
       <h2 class="kanban__title">{{ column.title }}</h2>
     </div>
-    <img  @click="handleAddTask" v-if="column.id !== 'done'" src="src/assets/img/kanban/plus.svg" alt="Добавить задачу" class="kanban__icon kanban__icon--add" :data-column-id="column.id" />
+    <img  @click="handleAddTask" v-if="column.id !== 'done'" src="../assets/img/kanban/plus.svg" alt="Добавить задачу" class="kanban__icon kanban__icon--add" :data-column-id="column.id" />
   </div>
 </template>
 
