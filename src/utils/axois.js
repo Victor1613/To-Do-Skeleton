@@ -14,6 +14,7 @@ api.interceptors.request.use(
         if(token){
             config.headers['X-BASE-AUTH'] = token;
         }
+
         return config;
     },
     (error) =>{

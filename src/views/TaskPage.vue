@@ -1,12 +1,14 @@
 <template>
 
   <header/>
+  <header/>
 
   <div style="text-align: center">
-    <button @click.prevent="deletLocalStorage" class="but">
-      <RouterLink to="/reg">Выход</RouterLink>
+    <button @click.prevent="deleteLocalStorage" class="but">
+      <RouterLink to="/board">К списку досок</RouterLink>
     </button>
   </div>
+
 
 
   <kanban-column
@@ -73,8 +75,8 @@ export default {
       'getTasks'
     ]),
 
-    deletLocalStorage(){
-      localStorage.removeItem('token');
+    deleteLocalStorage(){
+      localStorage.removeItem('id');
     },
 
     openModal(columnId) {

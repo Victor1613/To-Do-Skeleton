@@ -65,7 +65,7 @@ export default {
 
       await this.resetForm()
 
-      await router.push('/')
+      await router.push('/board')
     },
 
     resetForm() {

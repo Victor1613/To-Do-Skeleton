@@ -20,8 +20,8 @@ const router = createRouter({
             component:() => import("../views/RegPage.vue")
         },
         {
-            path:'/bord',
-            name:'bord',
+            path:'/board',
+            name:'board',
             component:() => import("../views/BoardPage.vue")
         }
 
