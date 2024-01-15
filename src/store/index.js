@@ -8,6 +8,8 @@ export default createStore({
         return{
             tasks: [],
             boards: [],
+            accountExists: false,
+
         }
     },
     getters:{
@@ -16,7 +18,8 @@ export default createStore({
         },
         boards(state){
             return state.boards
-        }
+        },
+        accountExists: state => state.accountExists,
     },
     mutations:{
         setTasks(state, tasksData){
@@ -24,11 +27,15 @@ export default createStore({
         },
         setBoards(state, boardsData){
             state.boards = boardsData
-        }
+        },
+        setAccountExists(state, value) {
+            state.accountExists = value
+        },
     },
 
     actions:{
-        signIn(_, formData){
+
+        signIn({commit}, formData){
             return axios.post('/auth/signin', formData)
                 .then((res)=>{
                     localStorage.setItem('token', res.data.token)
@@ -38,14 +45,28 @@ export default createStore({
                     console.log(res.data.token)
                     console.log(res.data.userId)
 
+                    commit("setAccountExists", false)
+                    // return res
                 }).catch((err)=>{
                     console.log(err)
+                    if (err.response && err.response.status === 400) {
+                        const errorData = err.response.data;
+                        if (errorData.type === 'BadRequest' && errorData.cause === 'Неверный логин или пароль') {
+                            console.log('Неверный логин или пароль')
+                            commit("setAccountExists", true)
+                            console.log(this.accountExists)
+                        }else {
+                            throw err;
+                        }
+                    } else {
+                        throw err;
+                    }
                 })
 
         },
 
         getBoards({commit}){
-            let userId = localStorage.getItem('userId');
+
             console.log(userId);
 
             return axios.get(`/user/${userId}/boards`, )
@@ -61,18 +82,6 @@ export default createStore({
         },
 
 
-        // openBoard(_, formData){
-        //     return axios.get(`/user/${userId}/boards`)
-        //         .then((res) => {
-        //             localStorage.setItem('id', res.data.array.id)
-        //
-        //             console.log(res)
-        //             console.log(res.data.array.id)
-        //         }).catch((err) =>{
-        //             console.log(err)
-        //         })
-        // },
-
         getTasks({commit}) {
             let id = localStorage.getItem('id');
 
@@ -87,16 +96,30 @@ export default createStore({
                 })
         },
 
-        signUp(_, formData){
-            return  axios.post('auth/signup', formData)
+
+        signUp({commit}, formData) {
+            return axios.put('/auth/signup', formData)
                 .then((res) => {
                     console.log(res)
-                }).catch((err) =>{
+                    commit("setAccountExists", false)
+                    return res
+                }).catch((err) => {
                     console.log(err)
+                    if (err.response && err.response.status === 400) {
+                        const errorData = err.response.data;
+                        if (errorData.type === 'BadRequest' && errorData.cause === 'Почта уже существует') {
+                            console.log('такой аккаунт уже есть')
+                            commit("setAccountExists", true)
+                        }else if (errorData.type === 'BadRequest' && errorData.cause === 'Не соблюдено минимальное кол-во символов поля Имя') {
+                            console.log('Не соблюдено минимальное кол-во символов поля Имя')
+                            commit("setAccountExists", true)
+                        }else {
+                            throw err;
+                        }
+                    } else {
+                        throw err;
+                    }
                 })
         },
-
-
-
     },
 });

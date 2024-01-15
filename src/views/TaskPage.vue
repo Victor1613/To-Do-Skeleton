@@ -1,7 +1,6 @@
 <template>
 
   <header/>
-  <header/>
 
   <div style="text-align: center">
     <button @click.prevent="deleteLocalStorage" class="but">
