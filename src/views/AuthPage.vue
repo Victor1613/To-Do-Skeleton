@@ -16,8 +16,12 @@
         <input v-model="formData.password" class="auth-form__input" type="password">
       </div>
       <div class="auth-form__field auth-form__field--remember-me">
-        <input class="auth-form__checkbox" type="checkbox" id="remember-me">
-        <label class="auth-form__label" for="remember-me">Запомнить меня.</label>
+        <input class="auth-form__checkbox"
+               type="checkbox"
+               id="remember-me"
+               v-model="$store.state.value"
+        >
+        <label class="auth-form__label" for="remember-me">Запомнить меня {{ $store.state.value }}</label>
       </div>
       <button class="auth-form__submit" type="submit">Войти</button>
       <the-modal-err-auth
@@ -26,10 +30,6 @@
       />
     </form>
   </div>
-  <div>
-    <img class="wave" src="../assets/img/auth/wave.svg">
-  </div>
-
 </template>
 
 <script>
@@ -51,6 +51,7 @@ export default {
         password: '',
       },
       isModalOpen: false,
+
     }
   },
   computed: {
@@ -62,36 +63,27 @@ export default {
     ...mapMutations([
       'setAccountExists'
     ]),
-    ...mapActions([ // иницилизировали для дальнейшего использования
+    ...mapActions([
       "signIn"
     ]),
 
-
-
-    async sabmit() { //async выполняет функцию по шагово (чтобы код который находится под async выполнялся по пордку
-
+    async sabmit() {
       const formData = {
         formData: {
           ...this.formData
-
         }
       };
 
-      await this.signIn(formData) //await - задержка на функци пока не получит ответ
+      await this.signIn(formData)
 
       console.log(formData)
-
-      // await router.push('/board')
-      // await this.resetForm()
 
       if(!this.accountExists){
         await router.push('/board')
         await this.resetForm()
-        console.log('dddddddd')
       }else{
         this.openModal()
       }
-
     },
 
     openModal() {

@@ -1,11 +1,22 @@
 <template>
-  <div class="registration container">
-    <h1 class="reg__title">Регистрация</h1>
-    <nav>
-    <div class="but">
-      <RouterLink to="/auth" style="color: black;">Авторизация</RouterLink>
+  <div class="registration container-Reg">
+    <div class="reg__title">
+      <div class="content">
+        Регистрация
+      </div>
     </div>
-    </nav>
+    <div class="to-page">
+      <p>
+          <RouterLink
+              to="/auth"
+              class="to-page__reg"
+          >
+            Авторизуйтесь,
+          </RouterLink>
+        если есть аккаунт
+      </p>
+    </div>
+
     <form @submit.prevent="sabmit" class="registration-form">
       <div class="reg-form__field">
         <label class="registration-form__label" for="password">Имя</label>
@@ -68,13 +79,10 @@
           Зарегистрароваться
         </button>
       </div>
-
-
       <th-modal-err-email
           v-if="isModalOpen"
           @close-modal="closeModal"
       />
-
     </form>
   </div>
 
@@ -138,6 +146,7 @@ export default {
             ...this.formData
           }
         }
+
         await this.signUp(formData)
 
         console.log(formData)
@@ -145,14 +154,9 @@ export default {
         if(!this.accountExists) {
           await router.push('/auth')
           await this.resetForm()
-
         }else{
           this.openModal()
         }
-
-        console.log('FFFFFFFFFFFFFFFFF')
-        console.log(this.accountExists)
-
       }
     },
 
@@ -179,7 +183,7 @@ export default {
 
     validatePassword() {
       if (this.formData.password.length < 5 ) {
-        this.errors.password = 'Пароль должен содержать не менее 5 символов, включая одну букву и одну цифру.';
+        this.errors.password = 'Пароль должен содержать не менее 5 символов';
       } else {
         this.errors.password = '';
       }
@@ -218,23 +222,53 @@ export default {
 </script>
 
 <style scoped>
+.container-Reg{
+  margin: 5vw auto;
+}
+.registration {
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+   width: 470px;
+   height: 636px;
+   background: #FFF;
+ }
 .reg__title {
-  color: #f4f2ff;
-
-  text-align: center;
-  font-size: 50px;
+  padding-top: 50px;
+}
+.content{
+  color: #7415D9;
+  font-family: Montserrat;
+  font-size: 40px;
   font-style: normal;
   font-weight: 500;
   line-height: normal;
+  border: #2ce49d;
+
 }
-.registration {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  width: 50vw;
-  height: 100vh;
+.to-page{
+  color: #988F8F;
+  font-family: Montserrat;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+  padding-top: 5px;
 }
+.to-page__reg{
+  color: #7415D9;
+  font-family: Montserrat;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+  text-decoration: none;
+}
+.to-page__reg:hover{
+  color: #5015d9;
+  transform: scale(1.5);
+}
+
 .reg-form__field {
   display: flex;
   flex-direction: column;
@@ -258,11 +292,7 @@ export default {
   box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.30);
   color: #f4f2ff;
 }
-.but{
-  height: 5vh;
-  background-color: #2ce49d;
-  border-radius: 4px;
-}
+
 span{
   color: red;
 }

@@ -31,9 +31,11 @@ export default createStore({
         setAccountExists(state, value) {
             state.accountExists = value
         },
+
     },
 
     actions:{
+
 
         signIn({commit}, formData){
             return axios.post('/auth/signin', formData)
