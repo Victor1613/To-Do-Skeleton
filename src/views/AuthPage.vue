@@ -19,9 +19,8 @@
         <input class="auth-form__checkbox"
                type="checkbox"
                id="remember-me"
-               v-model="$store.state.value"
         >
-        <label class="auth-form__label" for="remember-me">Запомнить меня {{ $store.state.value }}</label>
+        <label class="auth-form__label" for="remember-me">Запомнить меня</label>
       </div>
       <button class="auth-form__submit" type="submit">Войти</button>
       <the-modal-err-auth

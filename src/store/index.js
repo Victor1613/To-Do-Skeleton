@@ -31,6 +31,10 @@ export default createStore({
         addBoard(state, newBoard) {
             state.boards.push(newBoard);
         },
+        setAccountExists(state, value) {
+            state.accountExists = value
+        },
+
         deleteBoard(state, boardId) {
             state.boards = state.boards.filter(board => board.id !== boardId);
         },
@@ -253,7 +257,7 @@ export default createStore({
                 })
         },
 
-        signUp(_, formData){
+        signUp({commit}, formData){
             return  axios.put('/auth/signup', formData)
                 .then((res) => {
                     console.log(res)
