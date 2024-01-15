@@ -124,7 +124,7 @@ export default createStore({
         },
         async addBoardStatus({ commit, dispatch }, newBoardData) {
             try {
-                const userId = localStorage.getItem('userId');
+
                 const formData = {
                     name: newBoardData.name,
                 };
@@ -185,7 +185,7 @@ export default createStore({
         },
         async deleteTask({ commit, dispatch }, TaskInfo) {
             try {
-                const userId = localStorage.getItem('userId');
+
                 console.log(TaskInfo)
 
                 await axios.delete(`/boards/${TaskInfo.boardId}/tasks/${TaskInfo.id}`);
@@ -203,7 +203,7 @@ export default createStore({
         async editTask({ commit, dispatch }, editedTaskData) {
             console.log(editedTaskData)
             try {
-                const userId = localStorage.getItem('userId');
+
                 const formData = {
                     name: editedTaskData.title,
                     description: editedTaskData.description,
