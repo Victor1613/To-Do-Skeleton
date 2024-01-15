@@ -11,6 +11,5 @@ app.use(router).use(store)
 app.mount('#app')
 
 
-let userId = 0
 
 app.config.globalProperties.$myGlobalVariable = 'api'
