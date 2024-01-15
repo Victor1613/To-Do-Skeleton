@@ -8,11 +8,21 @@
     <form @submit.prevent="sabmit" class="registration-form">
       <div class="reg-form__field">
         <label class="registration-form__label" for="password">Имя</label>
-        <input type="text" placeholder="Имя" class="registration-form__input" v-model="formData.name">
+        <input
+            type="text"
+            placeholder="Имя"
+            class="registration-form__input"
+            v-model="formData.name"
+        >
       </div>
       <div class="reg-form__field">
         <label class="registration-form__label" for="password">Почта</label>
-        <input type="text" placeholder="email@inbox.com" class="registration-form__input" v-model="formData.email">
+        <input
+            type="text"
+            placeholder="email@inbox.com"
+            class="registration-form__input"
+            v-model="formData.email"
+        >
       </div>
       <div class="reg-form__field">
         <label class="registration-form__label" for="password">Пароль</label>
@@ -23,7 +33,12 @@
         <input type="password" placeholder="Повторить пароль" class="registration-form__input" v-model="formData.confermPassword">
       </div>
 
-      <button class="reg-form__submit" type="submit">Зарегистрароваться</button>
+      <button
+          class="reg-form__submit"
+          type="submit"
+      >
+        Зарегистрароваться
+      </button>
     </form>
   </div>
 
@@ -32,6 +47,7 @@
 import {mapActions} from "vuex";
 import router from "@/router/index.js";
 
+
 export default {
   data() {
     return {
@@ -39,8 +55,8 @@ export default {
         name: '',
         email: '',
         password: '',
-        confermPassword: ''
-      }
+        confermPassword: '',
+      },
     }
   },
 

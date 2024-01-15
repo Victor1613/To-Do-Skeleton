@@ -10,7 +10,12 @@
         <h2>{{board.description}}</h2>
 <!--        <h2>{{board.createdAt}}</h2>-->
 <!--        <h2>{{board.updatedAt}}</h2>-->
+
       </div>
+      <button @click="editBoard">Изменить</button>
+        <br>
+        <button @click="deleteBoard">Удалить</button>
+        <br>
     </div>
     <div>
       <h2></h2>
@@ -40,8 +45,14 @@ export default {
       'openBoard',
       'getTasks'
     ]),
-
-    saveIdBoard(boardId) {
+    deleteBoard(){
+      this.$emit('deleteBoard');
+    },
+    editBoard(){
+      this.$emit('editBoard');
+    },
+    
+        saveIdBoard(boardId) {
       // Сохраняем id доски в локальном хранилище
       localStorage.setItem('id', boardId)
       this.getTasks()
