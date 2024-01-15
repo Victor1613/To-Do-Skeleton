@@ -10,12 +10,12 @@
   padding: 0;
 }
 
+
 #app {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   background-color: #2B1887;
-  color: white;
   min-height: 100vh;
   min-width: 380px;
 }
