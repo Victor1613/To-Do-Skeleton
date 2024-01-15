@@ -1,11 +1,15 @@
 <template>
 
   <header/>
+  <header/>
+  <TheModalBoardStatus v-if="visibleModalBoardStatus" @close-modal="closeModal" :boardId="selectedBoardId"/>
 
   <div style="text-align: center">
     <button @click.prevent="deleteLocalStorage" class="but">
       <RouterLink to="/board">К списку досок</RouterLink>
     </button>
+    <button @click="statusBoard" class="but">Создать статус</button>
+
   </div>
 
 
@@ -13,9 +17,9 @@
   <kanban-column
       v-for="column in tasks"
       :key="column.id"
-      :column="column.statuses"
+      :column="column.status"
       :tasks="column.tasks"
-      @add-task="openModal(column.id)"
+      @add-task="openModal(column.status.id)"
       @task-dropped="handleTaskDropped"
   />
 
@@ -40,6 +44,7 @@ import RegPage from "@/views/RegPage.vue";
 import {mapActions, mapGetters} from "vuex";
 import router from "@/router/index.js";
 import TheModal from "@/components/todo/TheModal.vue";
+import TheModalBoardStatus from "@/components/board/TheModalBoarStatus.vue";
 
 
 export default {
@@ -56,7 +61,7 @@ export default {
     TheModal,
     AuthPage,
     RegPage,
-
+    TheModalBoardStatus,
 
 
   },
@@ -64,6 +69,8 @@ export default {
     return {
       isModalOpen: false,
       currentColumnId: null,
+      visibleModalBoardStatus: false,
+
       statuses: [],
     };
   },
@@ -77,32 +84,37 @@ export default {
     deleteLocalStorage(){
       localStorage.removeItem('id');
     },
-
+    statusBoard(){
+      this.visibleModalBoardStatus = true;
+    },
     openModal(columnId) {
       this.currentColumnId = columnId;
       this.isModalOpen = true;
     },
-    closeModal() {
-      this.isModalOpen = false;
-    },
     addTask(newTask) {
-      const newId = this.localTasks.length + 1;
-      const newTaskWithId = {
-        ...newTask,
-        id: newId,
-        columnId: this.currentColumnId,
-      };
-      this.localTasks.push(newTaskWithId);
-
-      const columnToUpdate = this.localColumns.find(
-          (column) => column.id === this.currentColumnId,
-      );
-      columnToUpdate.tasks.push(newId);
+      let boardId = localStorage.getItem("id");
+      newTask.boardId = boardId;
+      newTask.status = this.currentColumnId;
+      console.log(newTask);
+      this.$store
+          .dispatch('addTask', { ...newTask })
+          .then(() => {
+            this.resetForm();
+            this.closeModal();
+          })
+          .catch((error) => {
+            console.error('Ошибка при создании доски:', error);
+          });
 
       this.closeModal();
     },
+    closeModal() {
+      this.visibleModalBoard = false;
+      this.visibleModalBoardEdit = false;
+      this.visibleModalBoardStatus = false;
+      this.isModalOpen = false;
+    },
     handleTaskDropped(taskId, targetColumnId) {
-      // Находим текущий columnId задачи
       const currentTask = this.localTasks.find(task => task.id === taskId);
       if (!currentTask || currentTask.columnId === targetColumnId) {
         // Если задача уже в этой колонке или не найдена, ничего не делаем

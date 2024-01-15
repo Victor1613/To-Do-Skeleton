@@ -1,4 +1,5 @@
 <template>
+  <TheModalEdit v-if="visibleModal" @close-modal="closeModal" @edit-task="editTaskModal"/>
   <div
       v-if="task"
       class="task-item"
@@ -19,10 +20,14 @@
       </div>
       <div class="task-item__client">{{ task.createdAt }}</div>
     </div>
+    <button @click="deleteTask">Удалить</button>
+    <button @click="editTask">Редактировать</button>
   </div>
 </template>
 
 <script>
+import TheModalEdit from "@/components/todo/TheModalEdit.vue";
+
 export default {
   props: {
     task: {
@@ -30,7 +35,37 @@ export default {
       default: {},
     },
   },
+  data() {
+    return {
+      visibleModal: false,
+    }
+  },
+  components: {
+    TheModalEdit,
+  },
   methods: {
+    deleteTask(){
+      this.$store.dispatch('deleteTask', this.task);
+
+    },
+    editTask(){
+      this.visibleModal = true;
+
+    },
+    async editTaskModal(DataEditTask){
+      try {
+        DataEditTask.task = this.task;
+
+        await this.$store.dispatch('editTask', DataEditTask);
+        this.closeModal();
+      } catch(error) {
+        console.error('Ошибка при редактировании доски:', error);
+
+      }
+    },
+    closeModal(){
+      this.visibleModal = false;
+    },
     getComplexityDot(taskDate) {
       const currentDate = new Date();
       const inputTime = new Date(taskDate);
