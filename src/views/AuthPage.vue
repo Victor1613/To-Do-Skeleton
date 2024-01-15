@@ -1,28 +1,64 @@
 <template>
-  <div class="auth container">
-    <h1 class="auth__title">Авторизация</h1>
-    <nav>
-      <div class="but">
-        <RouterLink to="/reg" style="color: black;">Регистрация</RouterLink>
+  <div class="auth container--auth">
+    <div class="auth__title">
+      <div class="content">
+        Авторизация
       </div>
-    </nav>
+    </div>
+    <div class="to-page">
+      <p>
+        Пройдите
+        <RouterLink
+            to="/reg"
+            class="to-page__reg">регистрацию,</RouterLink>
+        если нет аккаунта
+      </p>
+    </div>
     <form class="auth-form" @submit.prevent="sabmit">
       <div class="auth-form__field">
         <label class="auth-form__label" for="login">Почта</label>
-        <input v-model="formData.email" class="auth-form__input" type="text">
+        <div class="auth-form__input">
+          <input
+              v-model="formData.email"
+              class="auth-form__input--text"
+              type="text"
+              placeholder="email@inbox.com"
+              @blur="validateEmail"
+          >
+        </div>
+        <span v-if="errors.email">
+            {{errors.email }}
+        </span>
       </div>
       <div class="auth-form__field">
         <label class="auth-form__label" for="password">Пароль</label>
-        <input v-model="formData.password" class="auth-form__input" type="password">
+        <div class="auth-form__input">
+          <input
+              v-model="formData.password"
+              class="auth-form__input--text"
+              type="password"
+              placeholder="Пароль"
+          >
+        </div>
+        <span v-if="errors.password">
+            {{errors.password }}
+          </span>
       </div>
-      <div class="auth-form__field auth-form__field--remember-me">
-        <input class="auth-form__checkbox"
-               type="checkbox"
-               id="remember-me"
+<!--      <div class="auth-form__field auth-form__field&#45;&#45;remember-me">-->
+<!--        <input class="auth-form__checkbox"-->
+<!--               type="checkbox"-->
+<!--               id="remember-me"-->
+<!--        >-->
+<!--        <label class="auth-form__label" for="remember-me">Запомнить меня</label>-->
+<!--      </div>-->
+      <div class="auth-button">
+        <button
+            class="auth-button__submit"
+            type="submit"
         >
-        <label class="auth-form__label" for="remember-me">Запомнить меня</label>
+          Войти
+        </button>
       </div>
-      <button class="auth-form__submit" type="submit">Войти</button>
       <the-modal-err-auth
           v-if="isModalOpen"
           @close-modal="closeModal"
@@ -49,6 +85,12 @@ export default {
         email: '',
         password: '',
       },
+      errors: {
+        email: '',
+        password: '',
+      },
+      showError: false,
+
       isModalOpen: false,
 
     }
@@ -67,22 +109,54 @@ export default {
     ]),
 
     async sabmit() {
-      const formData = {
-        formData: {
-          ...this.formData
+      this.validateEmail()
+      this.validatePassword()
+
+      await this.validateForm()
+      if (!this.showError){
+        const formData = {
+          formData: {
+            ...this.formData
+          }
+        };
+
+        await this.signIn(formData)
+
+        console.log(formData)
+
+        if(!this.accountExists){
+          await router.push('/board')
+          await this.resetForm()
+        }else{
+          this.openModal()
         }
-      };
-
-      await this.signIn(formData)
-
-      console.log(formData)
-
-      if(!this.accountExists){
-        await router.push('/board')
-        await this.resetForm()
-      }else{
-        this.openModal()
       }
+    },
+
+    validateEmail() {
+      const emailRegex = /^[^@]+@[^@]+\.[^@]+$/;
+      if (!emailRegex.test(this.formData.email)) {
+        this.errors.email = 'Проверьте правильность введенных данных';
+      } else {
+        this.errors.emai = '';
+      }
+    },
+    validatePassword() {
+      if (this.formData.password.length < 5 ) {
+        this.errors.password = 'Минимальное кол-во символов: 5';
+      } else {
+        this.errors.password = '';
+      }
+    },
+    validateForm() {
+      for (let field in this.errors) {
+        if (this.errors[field]) {
+          this.showError = true
+          console.log("не всё заполнено")
+          return
+        }
+      }
+      this.showError = false
     },
 
     openModal() {
@@ -103,107 +177,100 @@ export default {
 .auth {
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
-
-  width: 50vw;
-  height: 100vh;
-
-  background: #2B1887;
-
+  width: 470px;
+  height: 436px;
+  background: #FFF;
+  border-radius: 20px;
+}
+.container--auth{
+  margin: 11vw auto
 }
 .auth__title {
-  color: #f4f2ff;
-
-  text-align: center;
-  font-size: 50px;
+  padding-top: 30px;
+}
+.content{
+  color: #7415D9;
+  font-size: 40px;
   font-style: normal;
   font-weight: 500;
   line-height: normal;
+  border: #2ce49d;
 }
-
+.to-page{
+  color: #988F8F;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+  padding-top: 5px;
+  padding-bottom: 20px;
+}
+.to-page__reg{
+  color: #7415D9;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+  text-decoration: none;
+}
+.to-page__reg:hover{
+  color: #5015d9;
+  transform: scale(1.5);
+}
 .auth-form__field {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   gap: 5px;
-  margin: 15px 0;
+  height: 110px;
+
 }
 
-.auth-form__field--remember-me {
-  flex-direction: row;
-  gap: 0px;
-  align-items: center;
-}
 
 .auth-form__label {
-  color: #f4f2ff;
-  margin-left: 15px;
-  text-align: start;
-  font-size: 15px;
+  color: #7415D9;
+  font-size: 30px;
   font-style: normal;
   font-weight: 500;
+  line-height: normal;
+  padding-left: 58px;
 }
 
 .auth-form__input {
-  border-radius: 10px;
-  background: #D5CCFF;
-  border: none;
-  padding: 10px 25px;
-  width: 100%;
-  height: 45px;
+  color: #D9D3E0;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+  padding-left: 58px;
+}
+.auth-form__input--text{
+  width: 357px;
+  height: 43px;
   flex-shrink: 0;
+  border: 1px solid #988F8F;
+  padding-left: 15px;
+  font-size: 17px;
 }
 
-.auth-form__checkbox {
-  appearance: none;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  background-color: #5D5FEF;
-  width: 15px;
-  height: 15px;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  position: relative;
+.auth-button{
+  padding-left: 58px;
+}
+.auth-button__submit{
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  border-radius: 20px;
+  background: #7311DD;
+  height: 42px;
+  width: 357px;
 }
 
-.auth-form__checkbox:checked {
-  background-color: #5D5FEF;
-}
-
-.auth-form__checkbox:checked::after {
-  content: '';
-  position: absolute;
-  left: 5px;
-  top: 2px;
-  width: 3px;
-  height: 6px;
-  border: solid #f4f2ff;
-  border-width: 0 3px 3px 0;
-  transform: rotate(45deg);
-}
-
-.auth-form__submit {
-  width: 100%;
-  height: 45px;
-  border: none;
-  border-radius: 10px;
-  background: #5D5FEF;
-  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.30);
-  color: #f4f2ff;
-}
-
-.wave {
-  position: absolute;
-  bottom: 0px;
-  width: 100%;
-}
-
-.but{
-  border-radius: 4px;
-  height: 5vh;
-  background-color: #2ce49d;
-
+span{
+  color: red;
+  padding-left: 58px;
+  font-size: 15px;
 }
 </style>

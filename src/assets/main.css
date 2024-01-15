@@ -15,13 +15,14 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  background-color: #2B1887;
   min-height: 100vh;
   min-width: 380px;
 }
 
 html {
   min-width: 380px;
+  background: no-repeat linear-gradient(242deg, rgba(124, 0, 255, 0.90) 3.21%, #7A4AAD 101.21%);
+
 }
 
 .header__container,

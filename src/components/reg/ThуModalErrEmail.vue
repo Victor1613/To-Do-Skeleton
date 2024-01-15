@@ -29,6 +29,7 @@ export default {
 
 <style>
 .modal {
+  text-align: center;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -39,15 +40,16 @@ export default {
   height: 100%;
   background-color: rgb(255 255 255 / 33%);
   backdrop-filter: blur(15px);
+
 }
 
 .modal__container {
   display: flex;
   background-color: white;
   padding: 20px;
-  border-radius: 10px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-  width: 430px;
+  border-radius: 20px;
+  border: 1px solid black;
 }
 
 form {
@@ -55,18 +57,7 @@ form {
   width: 100%;
   flex-direction: column;
   gap: 10px;
-}
 
-input[type="text"],
-input[type="date"],
-textarea {
-  padding: 10px;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-}
-
-textarea {
-  resize: vertical;
 }
 
 button[type="submit"] {
