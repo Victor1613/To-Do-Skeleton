@@ -179,7 +179,7 @@ export default {
 .task-item__client {
   font-size: 14px;
   color: #4F46E5;
-  text-align: center;
+  text-align: right;
 }
 
 .board-button{

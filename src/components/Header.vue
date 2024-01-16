@@ -15,13 +15,17 @@
 </template>
 
 <script>
+import {mapActions, mapGetters} from "vuex";
+
+let names= localStorage.getItem('userId');
 export default {
   data() {
     return {
       title: 'Kanban Board',
-      userIcon: 'К.П',
+      userIcon: names,
     }
-  }
+  },
+
 }
 </script>
 

@@ -7,20 +7,30 @@
   <div style="text-align: center;">
     <div class="task-button">
       <div class="task__back">
+        <button @click="statusBoard" class="task-button__back">
+          <p class="task-button__text">
+            Создать статус
+          </p>
+        </button>
+      </div>
+    </div>
+
+    <div class="task-button">
+      <div class="task__back">
         <button @click.prevent="deleteLocalStorage" class="task-button__back">
           <RouterLink to="/board" class="task-button__text">К списку досок</RouterLink>
         </button>
       </div>
-      <div class="task-button">
-        <div class="task__back">
-          <button @click="statusBoard" class="task-button__back">
-            <p class="task-button__text">
-              Создать статус
-            </p>
-          </button>
-        </div>
+    </div>
+
+    <div class="task-button">
+      <div class="task__back" >
+        <button @click.prevent="deleteLocalStorageAll" class="task-button__back">
+          <RouterLink to="/reg" class="task-button__text">Выход</RouterLink>
+        </button>
       </div>
     </div>
+
   </div>
 
   <div class="kanban">
@@ -89,6 +99,12 @@ export default {
     ...mapActions([
       'getTasks'
     ]),
+
+    deleteLocalStorageAll(){
+      localStorage.removeItem('token');
+      localStorage.removeItem('userId');
+      localStorage.removeItem('id');
+    },
 
     deleteLocalStorage(){
       localStorage.removeItem('id');

@@ -47,7 +47,6 @@ export default {
 
   methods:{
     ...mapActions([
-
       'getTasks'
     ]),
     deleteBoard(){
