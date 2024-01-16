@@ -1,29 +1,38 @@
 <template>
 
-  <header/>
-  <header/>
+  <Header/>
+
   <TheModalBoardStatus v-if="visibleModalBoardStatus" @close-modal="closeModal" :boardId="selectedBoardId"/>
 
-  <div style="text-align: center">
-    <button @click.prevent="deleteLocalStorage" class="but">
-      <RouterLink to="/board">К списку досок</RouterLink>
-    </button>
-    <button @click="statusBoard" class="but">Создать статус</button>
-
+  <div style="text-align: center;">
+    <div class="task-button">
+      <div class="task__back">
+        <button @click.prevent="deleteLocalStorage" class="task-button__back">
+          <RouterLink to="/board" class="task-button__text">К списку досок</RouterLink>
+        </button>
+      </div>
+      <div class="task-button">
+        <div class="task__back">
+          <button @click="statusBoard" class="task-button__back">
+            <p class="task-button__text">
+              Создать статус
+            </p>
+          </button>
+        </div>
+      </div>
+    </div>
   </div>
 
-
-
-  <kanban-column
-      v-for="column in tasks"
-      :key="column.id"
-      :column="column.status"
-      :tasks="column.tasks"
-      @add-task="openModal(column.status.id)"
-      @task-dropped="handleTaskDropped"
-  />
-
-  <footer/>
+  <div class="kanban">
+    <kanban-column
+        v-for="column in tasks"
+        :key="column.id"
+        :column="column.status"
+        :tasks="column.tasks"
+        @add-task="openModal(column.status.id)"
+        @task-dropped="handleTaskDropped"
+    />
+  </div>
 
   <the-modal
       v-if="isModalOpen"
@@ -172,39 +181,49 @@ body{
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  background-color: #2B1887;
+
   color: white;
   min-height: 100vh;
   min-width: 380px;
 }
-
+.kanban {
+  display: flex;
+  padding: 40px;
+  align-items: flex-start;
+  gap: 40px;
+  margin: 10px 0;
+}
 html {
   min-width: 380px;
 }
 
-.header__container,
-footer {
-  background-color: #1C0E5E;
-  text-align: center;
-  padding: 10px 0;
+.task-button{
+  margin: 10px;
+  display:inline-block;
 }
-
-.header__title,
-.footer__text {
-  margin: 0;
-  padding: 10px 0;
+.task__back{
+  display:inline-block;
 }
-
-.container {
-  width: 100%;
-  padding: 0 15px;
-  margin: 0 auto;
+.task-button__back{
+  width: 127px;
+  height: 31px;
+  flex-shrink: 0;
+  border-radius: 12px;
+  border: 0.624px solid #847CEC;
+  background: #867CF2;
 }
-
-.but{
-  height: 5vh;
-  background-color: #2ce49d;
-  border-radius: 4px;
+.task-button__back:hover{
+  background: #504b96;
+  border: 0.624px solid #504b96;
 
 }
+.task-button__text{
+  color: #FFF;
+  font-size: 12.476px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+  text-decoration: none;
+}
+
 </style>

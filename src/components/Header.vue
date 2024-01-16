@@ -3,7 +3,7 @@
     <div class="container header__container">
       <h1 class="header__title">{{ title }}</h1>
       <div class="header__option">
-        <img src="../assets/img/header/plus.svg" alt="header__icon--add" class="header__icon header__icon--add">
+<!--        <img src="../assets/img/header/plus.svg" alt="header__icon&#45;&#45;add" class="header__icon header__icon&#45;&#45;add">-->
         <div class="header__user-icon">{{ userIcon }}</div>
       </div>
     </div>

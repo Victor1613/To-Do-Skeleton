@@ -7,7 +7,7 @@
       @dragstart="startDrag"
       @dragend="endDrag"
   >
-    <h3 class="task-item__title">{{ task.name }}</h3>
+    <p class="task-item__title">{{ task.name }}</p>
     <p class="task-item__description">{{ task.description }}</p>
     <div class="task-item__info">
       <div class="task-item__complexity complexity">
@@ -18,10 +18,24 @@
             class="complexity__dot"
         ></span>
       </div>
-      <div class="task-item__client">{{ task.createdAt }}</div>
+
     </div>
-    <button @click="deleteTask">Удалить</button>
-    <button @click="editTask">Редактировать</button>
+    <div class="task-item__client">{{ task.createdAt }}</div>
+    <div style="text-align: right;margin-top: 5px">
+      <div class="buttons">
+        <div class="board-button">
+          <div class="board-button__edit">
+            <button @click="editTask" class="editBoard">Изменить</button>
+          </div>
+        </div>
+        <div class="board-button">
+          <div class="board-button__delete">
+            <button @click="deleteTask" class="deleteBoard">Удалить</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
   </div>
 </template>
 
@@ -145,15 +159,21 @@ export default {
 }
 
 .task-item__title {
-  flex-grow: 1;
+  color: #715d86;
+  font-size: 30px;
+  font-style: normal;
   font-weight: 600;
-  color: #333;
+  line-height: normal;
+  word-wrap: break-word; /* разрешает перенос слов */
 }
 
 .task-item__description {
-  color: gray;
-  font-size: 12px;
-  margin: 10px 0;
+  color: #8b839f;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+  word-wrap: break-word; /* разрешает перенос слов */
 }
 
 .task-item__client {
@@ -162,8 +182,52 @@ export default {
   text-align: center;
 }
 
-.task-item__title:hover {
-  cursor: pointer;
-  opacity: .5;
+.board-button{
+  display:inline-block;
+  margin-right:15px;
+  padding-bottom: 23px;
 }
+
+.editBoard{
+  width: 97px;
+  height: 31px;
+  flex-shrink: 0;
+  border-radius: 12px;
+  border: 0.626px solid #847CEC;
+
+  color: #91869D;
+  font-size: 12.52px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+}
+.editBoard:hover{
+  border: 0.624px solid #504b96;
+  background: #504b96;
+  color: #FFF;
+}
+.deleteBoard{
+  width: 97px;
+  height: 31px;
+  flex-shrink: 0;
+  border-radius: 12px;
+  border: 0.624px solid #847CEC;
+  background: #867CF2;
+  color: #FFF;
+  font-size: 12.476px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+}
+.deleteBoard:hover{
+  background: #fd3f3f;
+  border: 0.624px solid #fd3f3f;
+
+}
+
+.board-button__delete{
+  padding-left: 49px;
+}
+
+
 </style>

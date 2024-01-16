@@ -108,7 +108,7 @@ textarea {
 
 button[type="submit"] {
   padding: 10px 20px;
-  background-color: #2d41a7;
+  background-color: #847CEC;
   color: white;
   border: none;
   border-radius: 5px;
@@ -116,7 +116,7 @@ button[type="submit"] {
 }
 
 button[type="submit"]:hover {
-  background-color: darkblue;
+  background-color: #504b96;
 }
 
 .close-modal {
