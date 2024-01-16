@@ -86,7 +86,7 @@ button[type="submit"]:hover {
 .cancel-button {
   padding: 10px 20px;
   background-color: rgb(255, 0, 64);
-  color: white;
+  color: black;
   border: none;
   border-radius: 5px;
   cursor: pointer;
