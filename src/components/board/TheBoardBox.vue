@@ -47,7 +47,7 @@ export default {
 
   methods:{
     ...mapActions([
-      'getTasks'
+      'getTasks',
     ]),
     deleteBoard(){
       this.$emit('deleteBoard');
@@ -56,10 +56,10 @@ export default {
       this.$emit('editBoard');
     },
     
-        saveIdBoard(boardId) {
+    saveIdBoard(boardId) {
       // Сохраняем id доски в локальном хранилище
-      localStorage.setItem('id', boardId)
-      this.getTasks()
+      localStorage.setItem('boardId', boardId)
+      this.getTasks();
       router.push('/')
 
     },

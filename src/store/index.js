@@ -7,6 +7,7 @@ export default createStore({
     state(){
         return{
             tasks: [],
+            statuses:[],
             boards: [],
             accountExists: false,
 
@@ -15,6 +16,9 @@ export default createStore({
     getters:{
         tasks(state){
             return state.tasks
+        },
+        statuses(state){
+            return state.statuses
         },
         boards(state){
             return state.boards
@@ -25,11 +29,18 @@ export default createStore({
         setTasks(state, tasksData){
             state.tasks = tasksData
         },
+        setBoardStatus(state, statusesData){
+            state.statuses = statusesData
+        },
         setBoards(state, boardsData){
             state.boards = boardsData
         },
+
         addBoard(state, newBoard) {
             state.boards.push(newBoard);
+        },
+        addBoardStatus(state, newBoardStatus) {
+            state.statuses.push(newBoardStatus);
         },
         setAccountExists(state, value) {
             state.accountExists = value
@@ -38,7 +49,8 @@ export default createStore({
         deleteBoard(state, boardId) {
             state.boards = state.boards.filter(board => board.id !== boardId);
         },
-          editBoard(state, editedBoard) {
+
+        editBoard(state, editedBoard) {
             const index = state.boards.findIndex(board => board.id === editedBoard.id);
             if (index !== -1) {
                 state.boards[index] = editedBoard;
@@ -78,28 +90,7 @@ export default createStore({
                 })
 
         },
-        async editBoard({ commit, dispatch }, editedBoardData) {
-            try {
-                const userId = localStorage.getItem('userId');
-                const formData = {
-                    name: editedBoardData.name,
-                    description: editedBoardData.description,
-                };
-        
-                const requestData = {
-                    formData: formData,
-                };
-        
-                const response = await axios.put(`/user/${userId}/boards/${editedBoardData.id}`, requestData);
 
-                commit('editBoard', response.data ?? 'undefined');
-                await dispatch('getBoards');
-        
-            } catch (error) {
-                console.error('Ошибка в редактировании доски', error);
-                throw error;
-            }
-        },
         async addBoard({ commit, dispatch }, newBoardData) {
             try {
                 const userId = localStorage.getItem('userId');
@@ -122,42 +113,29 @@ export default createStore({
                 throw error;
             }
         },
-        async addBoardStatus({ commit, dispatch }, newBoardData) {
+        async addBoardStatus({ commit, dispatch }, newBoardStatusData) {
             try {
 
                 const formData = {
-                    name: newBoardData.name,
+                    name: newBoardStatusData.name,
                 };
         
                 const requestData = {
                     formData: formData,
                 };
         
-                const response = await axios.post(`/boards/${newBoardData.id}/statuses`, requestData);
+                const response = await axios.post(`/boards/${newBoardStatusData.id}/statuses`, requestData);
                 commit('addBoardStatus', response.data);
         
                 await dispatch('getBoards');
+                await dispatch('getTasks');
         
             } catch (error) {
                 console.error('Ошибка в создании доски', error);
                 throw error;
             }
         },
-        async deleteBoard({ commit, dispatch }, boardId) {
-            try {
-                const userId = localStorage.getItem('userId');
-        
-                await axios.delete(`/user/${userId}/boards/${boardId}`);
-        
-                commit('deleteBoard', boardId);
-        
-                await dispatch('getBoards');
-        
-            } catch (error) {
-                console.error('Ошибка при удалении доски', error);
-                throw error;
-            }
-        },
+
         async addTask({ commit, dispatch }, newTaskData) {
             try {
                 const boardId = newTaskData.boardId; 
@@ -183,20 +161,49 @@ export default createStore({
                 throw error;
             }
         },
-        async deleteTask({ commit, dispatch }, TaskInfo) {
+        async editBoard({ commit, dispatch }, editedBoardData) {
             try {
+                const userId = localStorage.getItem('userId');
+                const formData = {
+                    name: editedBoardData.name,
+                    description: editedBoardData.description,
+                };
 
-                console.log(TaskInfo)
+                const requestData = {
+                    formData: formData,
+                };
 
-                await axios.delete(`/boards/${TaskInfo.boardId}/tasks/${TaskInfo.id}`);
-        
-                commit('deleteTask', TaskInfo.boardId);
-        
+                const response = await axios.put(`/user/${userId}/boards/${editedBoardData.id}`, requestData);
+
+                commit('editBoard', response.data ?? 'undefined');
+                await dispatch('getBoards');
+
+            } catch (error) {
+                console.error('Ошибка в редактировании доски', error);
+                throw error;
+            }
+        },
+        async editBoardStatus({ commit, dispatch }, editedBoardStatusData) {
+            try {
+                console.log('kkkkkkkkkkk')
+                const boardId = localStorage.getItem('boardId')
+                const formData = {
+                    name: editedBoardStatusData.name,
+                };
+
+                const requestData = {
+                    formData: formData,
+                };
+
+                const response = await axios.put(`/boards/${editedBoardStatusData.statuses.boardId}/statuses/${editedBoardStatusData.statuses.id}`, requestData);
+
+                commit('editBoard', response.data ?? 'undefined');
                 await dispatch('getBoards');
                 await dispatch('getTasks');
-        
+                console.log('ddddddddddddd')
+
             } catch (error) {
-                console.error('Ошибка при удалении Задачи', error);
+                console.error('Ошибка в редактировании доски', error);
                 throw error;
             }
         },
@@ -210,23 +217,76 @@ export default createStore({
                     statusId: editedTaskData.task.statusId,
                     plannedCompletionAt: editedTaskData.dueDate,
                 };
-        
+
                 const requestData = {
                     formData: formData,
                 };
-        
+
                 const response = await axios.put(`/boards/${editedTaskData.task.boardId}/tasks/${editedTaskData.task.id}`, requestData);
 
                 commit('editBoard', response.data ?? 'undefined');
                 await dispatch('getBoards');
                 await dispatch('getTasks');
-        
+
             } catch (error) {
                 console.error('Ошибка в редактировании доски', error);
                 throw error;
             }
         },
-           getBoards({commit}){
+
+        async deleteBoardStatus({ commit, dispatch }, statusesId) {
+            try {
+                const boardId = localStorage.getItem('boardId')
+                console.log(boardId)
+                console.log(statusesId)
+                await axios.delete(`/boards/${statusesId.boardId}/statuses/${statusesId.id}`);
+                commit('deleteBoardStatus', statusesId)
+                await dispatch('getBoards');
+                await dispatch('getBoardStatus');
+                await dispatch('getTasks');
+
+            } catch (error) {
+                console.error('Ошибка при удалении статуса', error);
+                throw error;
+            }
+        },
+
+        async deleteBoard({ commit, dispatch }, boardId) {
+            try {
+                const userId = localStorage.getItem('userId');
+
+                await axios.delete(`/user/${userId}/boards/${boardId}`);
+
+                commit('deleteBoard', boardId);
+
+                await dispatch('getBoards');
+                await dispatch('getTasks');
+
+            } catch (error) {
+                console.error('Ошибка при удалении доски', error);
+                throw error;
+            }
+        },
+
+        async deleteTask({ commit, dispatch }, TaskInfo) {
+            try {
+
+                console.log(TaskInfo)
+
+                await axios.delete(`/boards/${TaskInfo.boardId}/tasks/${TaskInfo.id}`);
+
+                commit('deleteTask', TaskInfo.boardId);
+
+                await dispatch('getBoards');
+                await dispatch('getTasks');
+
+            } catch (error) {
+                console.error('Ошибка при удалении Задачи', error);
+                throw error;
+            }
+        },
+
+        getBoards({commit}){
             let userId = localStorage.getItem('userId');
             console.log(userId);
 
@@ -242,16 +302,33 @@ export default createStore({
                 })
         },
 
+        getBoardStatus({commit}) {
+            let boardId = localStorage.getItem('boardId');
 
-        getTasks({commit}) {
-            let id = localStorage.getItem('id');
+            console.log('boardId', boardId, '/','userId', userId);
 
-            console.log('id', id, '/','userId', userId);
-
-            return axios.get(`/boards/${id}/tasks`)
+            return axios.get(`/boards/${boardId}/statuses`)
                 .then((res) => {
                     console.log(res)
+
+                    commit('setBoardStatus', res.data)
+                    console.log('setBoardStatus', res.data)
+                }).catch((err) => {
+                    console.log(err)
+                })
+        },
+
+        getTasks({commit}) {
+            let boardId = localStorage.getItem('boardId');
+
+            console.log('boardId', boardId, '/','userId', userId);
+
+            return axios.get(`/boards/${boardId}/tasks`)
+                .then((res) => {
+                    console.log(res)
+
                     commit('setTasks', res.data)
+                    console.log('setTasks', res.data)
                 }).catch((err) => {
                     console.log(err)
                 })

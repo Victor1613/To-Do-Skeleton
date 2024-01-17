@@ -2,7 +2,6 @@
 
   <Header/>
 
-  <TheModalBoardStatus v-if="visibleModalBoardStatus" @close-modal="closeModal" :boardId="selectedBoardId"/>
 
   <div style="text-align: center;">
     <div class="task-button">
@@ -40,7 +39,6 @@
         :column="column.status"
         :tasks="column.tasks"
         @add-task="openModal(column.status.id)"
-        @task-dropped="handleTaskDropped"
     />
   </div>
 
@@ -49,6 +47,13 @@
       @add-task="addTask"
       @close-modal="closeModal"
   />
+
+  <TheModalBoardStatus
+      v-if="visibleModalBoardStatus"
+      @add-statuses="addBoardStatus"
+      @close-modal="closeModal"
+  />
+
 
 
 </template>
@@ -69,7 +74,8 @@ import TheModalBoardStatus from "@/components/board/TheModalBoarStatus.vue";
 export default {
   computed:{
     ...mapGetters([
-      'tasks'
+      'tasks',
+      'statuses'
     ])
   },
 
@@ -91,23 +97,25 @@ export default {
       visibleModalBoardStatus: false,
 
       statuses: [],
+
     };
   },
 
 
   methods: {
     ...mapActions([
-      'getTasks'
+      'getTasks',
+      'getBoardStatus'
     ]),
 
     deleteLocalStorageAll(){
       localStorage.removeItem('token');
       localStorage.removeItem('userId');
-      localStorage.removeItem('id');
+      localStorage.removeItem('boardId');
     },
 
     deleteLocalStorage(){
-      localStorage.removeItem('id');
+      localStorage.removeItem('boardId');
     },
     statusBoard(){
       this.visibleModalBoardStatus = true;
@@ -115,9 +123,10 @@ export default {
     openModal(columnId) {
       this.currentColumnId = columnId;
       this.isModalOpen = true;
+
     },
     addTask(newTask) {
-      let boardId = localStorage.getItem("id");
+      let boardId = localStorage.getItem("boardId");
       newTask.boardId = boardId;
       newTask.status = this.currentColumnId;
       console.log(newTask);
@@ -133,42 +142,14 @@ export default {
 
       this.closeModal();
     },
+
     closeModal() {
       this.visibleModalBoard = false;
       this.visibleModalBoardEdit = false;
       this.visibleModalBoardStatus = false;
       this.isModalOpen = false;
     },
-    handleTaskDropped(taskId, targetColumnId) {
-      const currentTask = this.localTasks.find(task => task.id === taskId);
-      if (!currentTask || currentTask.columnId === targetColumnId) {
-        // Если задача уже в этой колонке или не найдена, ничего не делаем
-        return;
-      }
 
-      // Обновляем localTasks
-      const updatedTasks = this.localTasks.map(task => {
-        if (task.id === taskId) {
-          return { ...task, columnId: targetColumnId };
-        }
-        return task;
-      });
-      this.localTasks = updatedTasks;
-
-      // Обновляем localColumns
-      this.localColumns = this.localColumns.map(column => {
-        if (column.id === targetColumnId) {
-          // Добавляем задачу, если её там ещё нет
-          if (!column.tasks.includes(taskId)) {
-            return { ...column, tasks: [...column.tasks, taskId] };
-          }
-        } else {
-          // Удаляем задачу из текущей колонки
-          return { ...column, tasks: column.tasks.filter(id => id !== taskId) };
-        }
-        return column;
-      });
-    },
   },
 
   mounted() { //происходит после загрузки страници
@@ -176,6 +157,7 @@ export default {
       router.push('/auth')
     }
     else{
+      this.getBoardStatus()
       this.getTasks()
     }
   }

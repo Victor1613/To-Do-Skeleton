@@ -35,7 +35,7 @@
           :board="board"
           @deleteBoard="deleteBoard(board.id)"
           @editBoard="editBoard(board.id)"
-          @statusBoard="statusBoard(board.id)"
+
       />
     </div>
   </div>

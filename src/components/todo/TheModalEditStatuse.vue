@@ -2,10 +2,9 @@
   <div class="modal">
     <div class="modal__container">
       <a href="#" class="close-modal" @click="closeModal">✖</a>
-      <form @submit.prevent="submitBoard">
-        <p v-if="!isFormValid" class="text-dark">В названии и описании должно быть не менее 5 символов!</p>
-        <input type="text" v-model="newBoardStatus.name" placeholder="Введите заголовок Статус" />
-        <button type="submit" :disabled="!isFormValid">Отправить</button>
+      <form @submit.prevent="submitStatuses">
+        <input type="text" v-model="newColumn.title" placeholder="Введите новый заголовок статуса"/>
+        <button type="submit">Отправить</button>
         <button type="button" class="cancel-button" @click="closeModal">Отмена</button>
       </form>
     </div>
@@ -16,55 +15,29 @@
 export default {
   data() {
     return {
-      newBoardStatus: {
-        name: '',
-        description: '',
-      },
-      isFormValid: false,
+      newColumn: {
+        title: '',
+
+      }
     };
-  },
-  watch: {
-    newBoardStatus: {
-      handler() {
-        this.validateForm();
-      },
-      deep: true,
-    },
   },
   methods: {
     closeModal() {
       this.$emit('close-modal');
       this.resetForm();
     },
-    async submitBoard() {
-    try {
-      let boardId = localStorage.getItem('boardId');
-      if (this.isFormValid) {
-        this.newBoardStatus.id = boardId;
-        const response = await this.$store.dispatch('addBoardStatus', { ...this.newBoardStatus });
-        await this.$store.dispatch('getBoards');
-        this.resetForm();
-        this.closeModal();
-      }
-    } catch (error) {
-      console.error('Ошибка при редактировании доски:', error);
-    }
-  },
+    submitStatuses() {
+      this.$emit('edit-statuses', { ...this.newColumn });
+      this.resetForm();
+    },
     resetForm() {
-      this.newBoardStatus = { name: ''};
-      this.isFormValid = false;
-    },
-    validateForm() {
-      this.isFormValid =
-        this.newBoardStatus.name.length >= 5;
-    },
-  },
+      this.newColumn = { title: ''};
+    }
+  }
 };
 </script>
+
 <style>
-.text-dark{
-  color:black
-}
 .modal {
   display: flex;
   justify-content: center;
@@ -108,7 +81,7 @@ textarea {
 
 button[type="submit"] {
   padding: 10px 20px;
-  background-color: #847CEC;
+  background-color: #2d41a7;
   color: white;
   border: none;
   border-radius: 5px;
@@ -116,7 +89,7 @@ button[type="submit"] {
 }
 
 button[type="submit"]:hover {
-  background-color: #504b96;
+  background-color: darkblue;
 }
 
 .close-modal {

@@ -63,7 +63,7 @@ form {
 button[type="submit"] {
   padding: 10px 20px;
   background-color: #2d41a7;
-  color: white;
+
   border: none;
   border-radius: 5px;
   cursor: pointer;

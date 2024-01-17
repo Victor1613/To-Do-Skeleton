@@ -17,7 +17,7 @@
 <script>
 import {mapActions, mapGetters} from "vuex";
 
-let names= localStorage.getItem('userId');
+let names = localStorage.getItem('userId');
 export default {
   data() {
     return {

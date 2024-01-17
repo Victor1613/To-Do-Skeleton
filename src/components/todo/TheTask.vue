@@ -1,5 +1,4 @@
 <template>
-  <TheModalEdit v-if="visibleModal" @close-modal="closeModal" @edit-task="editTaskModal"/>
   <div
       v-if="task"
       class="task-item"
@@ -35,8 +34,14 @@
         </div>
       </div>
     </div>
-
   </div>
+
+  <TheModalEdit
+      v-if="visibleModal"
+      @close-modal="closeModal"
+      @edit-task="editTaskModal"
+  />
+
 </template>
 
 <script>
