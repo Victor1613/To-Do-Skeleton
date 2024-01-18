@@ -1,22 +1,35 @@
 <template>
   <header class="header">
-    <div class="header__container container ">
-      <h1 class="header__title">Kanban Board</h1>
+    <div class="container header__container">
+      <h1 class="header__title">{{ title }}</h1>
       <div class="header__option">
-        <settings/>
-        <img
-          src="../assets/img/header/plus.svg"
-          alt="header__icon--add"
-          class="header__icon header__icon--add"
-        />
-        <div class="header__user-icon">К.П</div>
+<!--        <img src="../assets/img/header/plus.svg" alt="header__icon&#45;&#45;add" class="header__icon header__icon&#45;&#45;add">-->
+        <div class="header__user-icon">{{ userIcon }}</div>
       </div>
     </div>
-    <div></div>
+    <div class="table">
+
+
+    </div>
   </header>
 </template>
 
-<style scoped>
+<script>
+import {mapActions, mapGetters} from "vuex";
+
+let names = localStorage.getItem('userId');
+export default {
+  data() {
+    return {
+      title: 'Kanban Board',
+      userIcon: names,
+    }
+  },
+
+}
+</script>
+
+<style>
 header {
   margin-top: 10px;
 }
@@ -30,6 +43,7 @@ header {
 
 .header__title {
   font-weight: 300;
+
 }
 
 .header__option {
@@ -49,7 +63,9 @@ header {
   justify-content: center;
   font-weight: 600;
 }
+
+.header__icon:hover {
+  cursor: pointer;
+  opacity: .5;
+}
 </style>
-<script setup>
-import Settings from "@/components/Settings.vue";
-</script>
